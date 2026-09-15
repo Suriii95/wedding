@@ -12,14 +12,20 @@
 <meta property="og:description" content="2026年10月11日 诚挚邀请您参加我们的婚礼">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://suriii95.github.io/wedding/?v=7">
-<meta property="og:image" content="https://suriii95.github.io/wedding/OG_COVER3.jpg?v=7">
-<meta property="og:image:secure_url" content="https://suriii95.github.io/wedding/OG_COVER3.jpg?v=7">
+<meta property="og:image" content="https://suriii95.github.io/wedding/WECHAT_SHARE.jpg?v=1">
+<meta property="og:image:secure_url" content="https://suriii95.github.io/wedding/WECHAT_SHARE.jpg?v=1">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="774">
 <meta property="og:image:height" content="774">
-<meta itemprop="image" content="https://suriii95.github.io/wedding/OG_COVER3.jpg?v=7">
-<link rel="image_src" href="https://suriii95.github.io/wedding/OG_COVER3.jpg?v=7">
+<meta itemprop="image" content="https://suriii95.github.io/wedding/WECHAT_SHARE.jpg?v=1">
+<link rel="image_src" href="https://suriii95.github.io/wedding/WECHAT_SHARE.jpg?v=1">
 <link rel="canonical" href="https://suriii95.github.io/wedding/?v=7">
+
+<!-- 微信内置浏览器分享兼容 -->
+<meta property="weixin:chat_title" content="陈锦华 & 苏芮 婚礼邀请函">
+<meta property="weixin:timeline_title" content="陈锦华 & 苏芮 婚礼邀请函">
+<meta property="weixin:description" content="2026年10月11日 诚挚邀请您参加我们的婚礼">
+<meta property="weixin:image" content="https://suriii95.github.io/wedding/WECHAT_SHARE.jpg?v=1">
 
 <!-- 兼容部分使用 Twitter Card 元数据的分享抓取器 -->
 <meta name="twitter:card" content="summary_large_image">
@@ -66,10 +72,10 @@ body{background:#000;overflow-x:hidden}
 </style>
 </head>
 <body>
-  <!-- 分享封面兜底：图片本身为站点公开静态 JPG，不依赖 JS/登录/本地缓存 -->
-  <img src="OG_COVER3.jpg?v=7" width="774" height="774"
+  <!-- 微信内置浏览器缩略图兜底：使用真正的 JPEG，并作为 body 首张图片 -->
+  <img src="WECHAT_SHARE.jpg?v=1" width="774" height="774"
        alt="陈锦华 & 苏芮 婚礼邀请函"
-       style="position:absolute;left:-10000px;top:-10000px;width:1px;height:1px;opacity:0;pointer-events:none;">
+       style="position:absolute;left:-10000px;top:-10000px;width:300px;height:300px;visibility:hidden;pointer-events:none;">
 <button class="fab" id="mb">♫</button>
 <button class="fab" id="editBtn">✎</button>
 <div class="panel" id="panel">
@@ -119,6 +125,21 @@ body{background:#000;overflow-x:hidden}
 </div>
 
 <script>
+(function(){
+  if(!/MicroMessenger/i.test(navigator.userAgent)) return;
+  document.title='陈锦华 & 苏芮 婚礼邀请函';
+  var metas={
+    'description':'2026年10月11日 诚挚邀请您参加我们的婚礼',
+    'weixin:chat_title':'陈锦华 & 苏芮 婚礼邀请函',
+    'weixin:timeline_title':'陈锦华 & 苏芮 婚礼邀请函',
+    'weixin:description':'2026年10月11日 诚挚邀请您参加我们的婚礼',
+    'weixin:image':'https://suriii95.github.io/wedding/WECHAT_SHARE.jpg?v=1'
+  };
+  Object.keys(metas).forEach(function(k){
+    var el=document.querySelector(k.indexOf(':')>=0?'meta[property="'+k+'"]':'meta[name="'+k+'"]');
+    if(el) el.setAttribute('content',metas[k]);
+  });
+})();
 const $=s=>document.querySelector(s);
 const mu=$('#mu'),mb=$('#mb'),editBtn=$('#editBtn'),panel=$('#panel'),stage=$('#stage'),track=$('#track'),counter=$('#counter');
 let editing=false,idx=0,timer=null,pauseTimer=null;
