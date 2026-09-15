@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>陈锦华 & 苏芮 婚礼</title>
+<meta name="description" content="2026年10月11日 · 日出东山海银沙酒店 · 期待与你相见">
+<meta property="og:title" content="陈锦华&苏芮婚礼">
+<meta property="og:description" content="2026年10月11日 · 日出东山海银沙酒店 · 期待与你相见">
+<meta property="og:image" content="https://suriii95.github.io/wedding/OG_COVER.jpg" itemprop="image">
+<meta property="og:image:width" content="500">
+<meta property="og:image:height" content="400">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:url" content="https://suriii95.github.io/wedding/">
+<meta property="og:type" content="website">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{background:#000;overflow-x:hidden}
+.page{max-width:480px;margin:0 auto}
+
+/* ===== 普通切片屏 ===== */
+.sc{width:100%;position:relative}
+.sc>img{width:100%;display:block}
+
+/* ===== 第5屏：轮播位（红白相框 + 照片轮播）===== */
+.cb{width:100%;padding-top:135.5%;background:#fff;position:relative}
+.cb .frame{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;z-index:0;pointer-events:none}
+.cb .stage{position:absolute;left:9.0%;top:3.87%;width:82.0%;height:90.78%;overflow:hidden;background:#111;z-index:2}
+.cb .stage .track{position:relative;width:100%;height:100%;overflow:hidden;touch-action:pan-y}
+.cb .stage .slide{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .8s ease-in-out;pointer-events:none}
+.cb .stage .slide.on{opacity:1;pointer-events:auto}
+.cb .stage .counter{position:absolute;right:10px;bottom:10px;z-index:5;font-size:11px;letter-spacing:.15em;color:rgba(255,255,255,.75);background:rgba(0,0,0,.35);padding:3px 8px;border-radius:10px}
+
+/* ===== 地图链接层 ===== */
+.mapwrap{position:relative}
+.mapwrap a.map-link{position:absolute;left:30%;top:23%;width:40%;height:8%;z-index:3;display:block}
+.mapwrap a.map-link:hover{background:rgba(193,59,50,.12);border-radius:6px}
+
+/* ===== 悬浮按钮 ===== */
+.fab{position:fixed;z-index:50;border-radius:50%;border:none;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.35);display:grid;place-items:center}
+#mb{top:16px;right:16px;width:36px;height:36px;background:rgba(253,250,243,.92);color:#c13b32;font-size:14px}
+#editBtn{bottom:24px;right:16px;width:46px;height:46px;background:#c13b32;color:#fff;font-size:15px}
+#editBtn.editing{background:#26221f}
+.editing .stage{outline:2px dashed rgba(193,59,50,.9);outline-offset:-2px;cursor:pointer}
+.editing .stage::after{content:'点击替换照片';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(193,59,50,.92);color:#fff;font-size:12px;padding:6px 14px;border-radius:16px;z-index:6;pointer-events:none}
+.hint{position:fixed;top:70px;left:50%;transform:translateX(-50%);z-index:70;background:rgba(0,0,0,.82);color:#fff;padding:8px 18px;border-radius:20px;font-size:12px;display:none;max-width:88%;text-align:center}
+.panel{position:fixed;left:50%;bottom:86px;transform:translateX(-50%);z-index:60;background:#fff;border-radius:14px;box-shadow:0 8px 30px rgba(0,0,0,.35);padding:14px 16px;display:none;width:min(300px,90%);gap:8px;flex-direction:column}
+.panel.show{display:flex}
+.panel button{border:1px solid #ddd;background:#faf7f0;border-radius:8px;padding:10px 6px;font-size:12px;color:#26221f;cursor:pointer}
+.panel button.primary{background:#c13b32;border-color:#c13b32;color:#fff}
+.panel .tip{font-size:11px;color:#9a9088;line-height:1.6;text-align:center}
+</style>
+</head>
+<body>
+<img src="assets/OG_COVER.jpg" id="og-cover" alt="" style="position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;opacity:0;pointer-events:none">
+
+<button class="fab" id="mb">♫</button>
+<button class="fab" id="editBtn">✎</button>
+<div class="panel" id="panel">
+  <button onclick="addPhoto()">添加一张轮播照片</button>
+  <button onclick="removeCurrent()">删除当前照片</button>
+  <button class="primary" onclick="exportHTML()">导出 HTML</button>
+  <div class="tip">编辑模式下点轮播照片区可直接替换当前照片。导出后可分享。</div>
+</div>
+<div class="hint" id="hint"></div>
+<input type="file" id="fileAdd" accept="image/*" hidden>
+<input type="file" id="fileReplace" accept="image/*" hidden>
+<audio id="mu" src="assets/WEDDING_MUSIC.mp3" loop preload="auto"></audio>
+
+<div class="page">
+  <section class="sc"><img src="assets/s01.jpg" alt=""></section>
+  <section class="sc"><img src="assets/s02.jpg" alt=""></section>
+  <section class="sc"><img src="assets/s03.jpg" alt=""></section>
+  <section class="sc"><img src="assets/s04.jpg" alt=""></section>
+  <section class="cb" id="cb5">
+    <img class="frame" src="assets/s05_frame.jpg" alt="">
+    <div class="stage" id="stage">
+      <div class="track" id="track">
+        <img class="slide on" src="assets/carousel01.jpg">
+        <img class="slide" src="assets/carousel02.jpg">
+        <img class="slide" src="assets/carousel03.jpg">
+        <img class="slide" src="assets/carousel04.jpg">
+        <img class="slide" src="assets/carousel05.jpg">
+        <img class="slide" src="assets/carousel06.jpg">
+        <img class="slide" src="assets/carousel07.jpg">
+        <img class="slide" src="assets/carousel08.jpg">
+        <img class="slide" src="assets/carousel09.jpg">
+        <img class="slide" src="assets/carousel10.jpg">
+        <img class="slide" src="assets/carousel11.jpg">
+        <img class="slide" src="assets/carousel12.jpg">
+        <img class="slide" src="assets/carousel13.jpg">
+        <img class="slide" src="assets/carousel14.jpg">
+        <img class="slide" src="assets/carousel15.jpg">
+        <img class="slide" src="assets/carousel16.jpg">
+        <img class="slide" src="assets/carousel17.jpg">
+        <img class="slide" src="assets/carousel18.jpg">
+      </div>
+      <div class="counter" id="counter">01 / 18</div>
+    </div>
+  </section>
+  <section class="sc mapwrap"><img src="assets/s06.jpg" alt=""><a class="map-link" href="https://uri.amap.com/search?keyword=%E6%97%A5%E5%87%BA%E4%B8%9C%E5%B1%B1%E6%B5%B7%E9%93%B6%E6%B2%99%E9%85%92%E5%BA%97" target="_blank" rel="noopener"></a></section>
+  <section class="sc"><img src="assets/s07.jpg" alt=""></section>
+</div>
+
+<script>
+const $=s=>document.querySelector(s);
+const mu=$('#mu'),mb=$('#mb'),editBtn=$('#editBtn'),panel=$('#panel'),stage=$('#stage'),track=$('#track'),counter=$('#counter');
+let editing=false,idx=0,timer=null,pauseTimer=null;
+
+/* BGM：打开自动播放，被浏览器拦截时首次触摸兜底 */
+function tryPlay(){
+  const p=mu.play();
+  if(p&&p.catch)p.catch(()=>{});
+}
+tryPlay();
+const wake=()=>tryPlay();
+['touchstart','click','pointerdown'].forEach(ev=>document.addEventListener(ev,wake,{passive:true}));
+if(typeof WeixinJSBridge!=='undefined'){WeixinJSBridge.invoke('getNetworkType',{},()=>tryPlay());}
+document.addEventListener('WeixinJSBridgeReady',()=>tryPlay());
+mb.onclick=()=>{mu.paused?tryPlay():mu.pause();};
+editBtn.onclick=()=>{
+  editing=!editing;
+  editBtn.classList.toggle('editing',editing);
+  panel.classList.toggle('show',editing);
+  showHint(editing?'编辑模式：点轮播照片区可换图':'已退出编辑模式');
+};
+stage.onclick=e=>{if(!editing)return;$('#fileReplace').value='';$('#fileReplace').click();};
+$('#fileReplace').onchange=e=>{
+  const f=e.target.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=ev=>{[...track.querySelectorAll('.slide')][idx].src=ev.target.result;showHint('当前照片已替换 ✓');};
+  r.readAsDataURL(f);
+};
+function addPhoto(){$('#fileAdd').value='';$('#fileAdd').click();}
+$('#fileAdd').onchange=e=>{
+  const f=e.target.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=ev=>{
+    const img=document.createElement('img');
+    img.className='slide';img.src=ev.target.result;
+    track.appendChild(img);
+    updateCounter();showHint('已添加一张照片 ✓');
+  };
+  r.readAsDataURL(f);
+};
+function removeCurrent(){
+  const imgs=[...track.querySelectorAll('.slide')];
+  if(imgs.length<=1){showHint('至少保留一张照片');return;}
+  imgs[idx].remove();
+  idx=Math.min(idx,imgs.length-2);
+  updateCounter();showHint('已删除当前照片');
+}
+function slides(){return [...track.querySelectorAll('.slide')];}
+function updateCounter(){
+  counter.textContent=String(idx+1).padStart(2,'0')+' / '+String(slides().length).padStart(2,'0');
+}
+function markOn(){
+  slides().forEach((s,i)=>s.classList.toggle('on',i===idx));
+}
+/* 自动轮播：每 2 秒切换一次；可手指拖动，松手吸附到最近一张 */
+function goTo(next){
+  const arr=slides(),n=arr.length;if(n<1)return;
+  idx=(next+n)%n;
+  markOn();updateCounter();
+}
+function tick(){
+  if(touching)return;
+  goTo(idx+1);
+}
+function start(){clearInterval(timer);timer=setInterval(tick,4000);}
+function pauseAuto(){clearInterval(timer);clearTimeout(pauseTimer);pauseTimer=setTimeout(start,4000);}
+let touching=false,touchX=0,touchY=0;
+track.addEventListener('touchstart',e=>{touching=true;touchX=e.touches[0].clientX;touchY=e.touches[0].clientY;pauseAuto();},{passive:true});
+track.addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].clientX-touchX,dy=e.changedTouches[0].clientY-touchY;
+  touching=false;
+  if(Math.abs(dx)>45&&Math.abs(dx)>Math.abs(dy)) goTo(idx+(dx<0?1:-1));
+  pauseAuto();
+},{passive:true});
+track.addEventListener('touchcancel',()=>{touching=false;pauseAuto();},{passive:true});
+start();updateCounter();markOn();
+
+function showHint(t){const h=$('#hint');h.textContent=t;h.style.display='block';clearTimeout(h._t);h._t=setTimeout(()=>h.style.display='none',2200);}
+
+/* 导出单文件 */
+function exportHTML(){
+  const slides=slides().map((x,i)=>`<img class="slide${i===idx?' on':''}" src="${x.src}">`).join('');
+  const parts=[...document.querySelectorAll('.sc')].map(sec=>{
+    const img=sec.querySelector('img.frame')||sec.querySelector('img');
+    if(sec.querySelector('.stage')){
+      return `<section class="cb"><img class="frame" src="${img.src}"><div class="stage"><div class="track">${slides}</div><div class="counter">01 / ${slides().length}</div></div></section>`;
+    }
+    const mapLink=sec.querySelector('.map-link');
+    const linkTag=mapLink?`<a class="map-link" href="${mapLink.href}" target="_blank" rel="noopener"></a>`:'';
+    return `<section class="sc${mapLink?' mapwrap':''}"><img src="${img.src}">${linkTag}</section>`;
+  }).join('');
+  const css=`<style>*{margin:0;padding:0;box-sizing:border-box}body{background:#000}.page{max-width:480px;margin:0 auto}.sc{width:100%;position:relative}.sc>img{width:100%;display:block}.mapwrap{position:relative}.mapwrap a.map-link{position:absolute;left:30%;top:23%;width:40%;height:8%;z-index:3;display:block}.cb{width:100%;padding-top:135.5%;background:#fff;position:relative}.cb .frame{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;z-index:0;pointer-events:none}.cb .stage{position:absolute;left:9.0%;top:3.87%;width:82.0%;height:90.78%;overflow:hidden;background:#111;z-index:2}.cb .stage .track{position:relative;width:100%;height:100%;overflow:hidden;touch-action:pan-y}.cb .stage .slide{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .8s ease-in-out;pointer-events:none}.cb .stage .slide.on{opacity:1;pointer-events:auto}.cb .stage .counter{position:absolute;right:10px;bottom:10px;z-index:5;font-size:11px;letter-spacing:.15em;color:rgba(255,255,255,.75);background:rgba(0,0,0,.35);padding:3px 8px;border-radius:10px}.mb{position:fixed;top:16px;right:16px;z-index:50;width:36px;height:36px;border-radius:50%;border:none;background:rgba(253,250,243,.92);color:#c13b32;font-size:14px;cursor:pointer}</style>`;
+  const html=`<!DOCTYPE html>
+<html lang="zh"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Kamwah &amp; Suri · 婚礼邀请</title>${css}</head><body>
+<img src="assets/OG_COVER.jpg" id="og-cover" alt="" style="position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;opacity:0;pointer-events:none">
+<button class="mb" id="mb">♫</button><audio id="mu" src="${$('#mu').currentSrc||'assets/WEDDING_MUSIC.mp3'}" loop></audio>
+<div class="page">${parts}</div>
+<script>const mb=document.getElementById('mb'),mu=document.getElementById('mu');function tp(){const p=mu.play();if(p&&p.catch)p.catch(()=>{})}tp();const wk=()=>tp();['touchstart','click','pointerdown'].forEach(ev=>document.addEventListener(ev,wk,{passive:true}));if(typeof WeixinJSBridge!=='undefined'){WeixinJSBridge.invoke('getNetworkType',{},()=>tp());}document.addEventListener('WeixinJSBridgeReady',()=>tp());mb.onclick=()=>{mu.paused?tp():mu.pause()};const st=document.querySelector('.stage'),tr=document.querySelector('.track'),co=document.querySelector('.counter');let i=${idx},touch=false,touchX=0,touchY=0;function sl(){return [...tr.querySelectorAll('.slide')]}function mark(){sl().forEach((s,k)=>s.classList.toggle('on',k===i));co.textContent=String(i+1).padStart(2,'0')+' / '+String(sl().length).padStart(2,'0')}function go(n){const a=sl();if(!a.length)return;i=(n+a.length)%a.length;mark()}function tick(){if(!touch)go(i+1)}let t=setInterval(tick,4000);function pause(){clearInterval(t);clearTimeout(window._pt);window._pt=setTimeout(()=>t=setInterval(tick,4000),4000)}tr.addEventListener('touchstart',e=>{touch=true;touchX=e.touches[0].clientX;touchY=e.touches[0].clientY;pause()},{passive:true});tr.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-touchX,dy=e.changedTouches[0].clientY-touchY;touch=false;if(Math.abs(dx)>45&&Math.abs(dx)>Math.abs(dy))go(i+(dx<0?1:-1));pause()},{passive:true});tr.addEventListener('touchcancel',()=>{touch=false;pause()},{passive:true});mark();<\/script>
+</body></html>`;
+  const blob=new Blob([html],{type:'text/html'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='wedding_invite.html';a.click();
+  showHint('已导出，下载后可分享');
+}
+</script>
+</body>
+</html>
